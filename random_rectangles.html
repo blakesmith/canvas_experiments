@@ -2,18 +2,27 @@
   <head>
     <title>Canvas template</title>
     <script type="text/javascript">
-      var NUMBER_OF_RECTANGLES = 100;
+      var CANVAS = {width: 640, height: 480};
+      var NUMBER_OF_RECTANGLES = 15;
 
       var RotatingRectangle = function(opts){
         var rotationState = 0;
+
+        if (opts.falling) {
+          var fallingSpeed = Math.ceil(Math.random() * 5);
+          opts.y = -opts.height
+        }
+    
+
         this.draw = function(ctx){
 
-          if (opts.direction){
+          if (opts.direction)
             rotationState += opts.rotationSpeed;
-          }
-          else {
+          else 
             rotationState -= opts.rotationSpeed;
-          }
+          
+          if (opts.falling)
+            opts.y += fallingSpeed;
 
           ctx.save();
           ctx.translate(opts.x+(opts.width/2), opts.y+(opts.height/2));
@@ -21,6 +30,12 @@
           ctx.fillStyle = opts.fillColor;
           ctx.fillRect(0-(opts.width/2), 0-(opts.height/2), opts.width, opts.height);
           ctx.restore();
+
+          if (opts.y > CANVAS.height) {
+            removeRectangle(this);
+            allShapes.push(createRectangle());
+          }
+
         }
       }
 
@@ -31,24 +46,38 @@
       function generateShapes(count){
         var allShapes = [];
         for (i=0; i < count; ++i) {
-          var red = Math.floor(Math.random() * 256);
-          var green = Math.floor(Math.random() * 256);
-          var blue = Math.floor(Math.random() * 256);
-          var opacity = Math.random();
-          var direction = Math.round(Math.random()) == 0 ? false : true
-          var rect = new RotatingRectangle({
-            x: Math.floor(Math.random() * 640), 
-            y: Math.floor(Math.random() * 480), 
-            width: 50, 
-            height: 50, 
-            rotationSpeed: Math.random()*.10,
-            fillColor: "rgba("+red+", "+green+", "+blue+", "+opacity+")", 
-            direction: direction
-          });
-          allShapes.push(rect); 
+          allShapes.push(createRectangle()); 
         }
         return allShapes;
       }
+
+      function removeRectangle(rect){
+        for (i=0; i < allShapes.length; ++i) {
+          if (allShapes[i] == rect){
+            allShapes.splice(i, 1);
+            return;
+          }
+        }
+      }
+
+      function createRectangle(){
+        var red = Math.floor(Math.random() * 256);
+        var green = Math.floor(Math.random() * 256);
+        var blue = Math.floor(Math.random() * 256);
+        var opacity = Math.random();
+        var direction = Math.round(Math.random()) == 0 ? false : true
+        return new RotatingRectangle({
+          x: Math.floor(Math.random() * 640), 
+          y: Math.floor(Math.random() * 480), 
+          width: 50, 
+          height: 50, 
+          falling: true,
+          rotationSpeed: Math.random()*.10,
+          fillColor: "rgba("+red+", "+green+", "+blue+", "+opacity+")", 
+          direction: direction
+        });
+      }
+
       function draw() {
         var canvas = document.getElementById('tutorial');
 
