@@ -2,16 +2,23 @@
   <head>
     <title>Canvas template</title>
     <script type="text/javascript">
+      setInterval(draw, 30);
+      var degrees = 0.0;
       function draw() {
         var canvas = document.getElementById('tutorial');
+
         if (canvas.getContext) {
           var ctx = canvas.getContext('2d');
+          ctx.clearRect(0,0,150,150);
+          degrees += 0.016;
 
+          ctx.save();
+          ctx.translate(75, 75);
+          ctx.rotate(degrees);
           ctx.fillStyle = "rgb(200, 0, 0)";
-          ctx.fillRect(10, 10, 55, 50);
+          ctx.fillRect(-25, -25, 50, 50);
+          ctx.restore();
 
-          ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
-          ctx.fillRect(30, 30, 55, 50);
         }
       }
     </script>
