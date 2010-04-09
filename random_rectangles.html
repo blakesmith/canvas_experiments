@@ -2,8 +2,6 @@
   <head>
     <title>Canvas template</title>
     <script type="text/javascript">
-      setInterval(draw, 30);
-      var degrees = 0.0;
       var RotatingRectangle = function(x, y, width, height, rot, rgb){
         var rotation = rot;
         var rotationState = 0;
@@ -17,6 +15,10 @@
           ctx.fillRect(0-(width/2), 0-(height/2), width, height);
           ctx.restore();
         }
+      }
+
+      function init(){
+        setInterval(draw, 30);
       }
 
       function generateShapes(){
@@ -35,7 +37,6 @@
         }
         return allShapes;
       }
-      var allShapes = generateShapes();
       function draw() {
         var canvas = document.getElementById('tutorial');
 
@@ -47,6 +48,10 @@
           } 
         }
       }
+
+      var allShapes = generateShapes();
+
+      init();
     </script>
     <style type="text/css">
       canvas {
@@ -54,7 +59,7 @@
       }
     </style>
   </head>
-  <body onload="draw();">
+  <body>
     <canvas id="tutorial" width="640" height="480" />
   </body>
 </html>
