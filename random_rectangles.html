@@ -4,17 +4,22 @@
     <script type="text/javascript">
       var NUMBER_OF_RECTANGLES = 100;
 
-      var RotatingRectangle = function(x, y, width, height, rot, rgb, direction){
-        var rotation = rot;
+      var RotatingRectangle = function(opts){
         var rotationState = 0;
         this.draw = function(ctx){
-          direction ? rotationState += rotation : rotationState -= rotation;
+
+          if (opts.direction){
+            rotationState += opts.rotationSpeed;
+          }
+          else {
+            rotationState -= opts.rotationSpeed;
+          }
 
           ctx.save();
-          ctx.translate(x+(width/2), y+(height/2));
+          ctx.translate(opts.x+(opts.width/2), opts.y+(opts.height/2));
           ctx.rotate(rotationState);
-          ctx.fillStyle = rgb;
-          ctx.fillRect(0-(width/2), 0-(height/2), width, height);
+          ctx.fillStyle = opts.fillColor;
+          ctx.fillRect(0-(opts.width/2), 0-(opts.height/2), opts.width, opts.height);
           ctx.restore();
         }
       }
@@ -26,15 +31,20 @@
       function generateShapes(count){
         var allShapes = [];
         for (i=0; i < count; ++i) {
-          var rotation = Math.random()*.10
-          var x = Math.floor(Math.random() * 640);
-          var y = Math.floor(Math.random() * 480);
           var red = Math.floor(Math.random() * 256);
           var green = Math.floor(Math.random() * 256);
           var blue = Math.floor(Math.random() * 256);
           var opacity = Math.random();
           var direction = Math.round(Math.random()) == 0 ? false : true
-          var rect = new RotatingRectangle(x, y, 50, 50, rotation, "rgba("+red+", "+green+", "+blue+", "+opacity+")", direction);
+          var rect = new RotatingRectangle({
+            x: Math.floor(Math.random() * 640), 
+            y: Math.floor(Math.random() * 480), 
+            width: 50, 
+            height: 50, 
+            rotationSpeed: Math.random()*.10,
+            fillColor: "rgba("+red+", "+green+", "+blue+", "+opacity+")", 
+            direction: direction
+          });
           allShapes.push(rect); 
         }
         return allShapes;
