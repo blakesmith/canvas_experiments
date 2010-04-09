@@ -4,7 +4,38 @@
     <script type="text/javascript">
       var CANVAS = {width: 640, height: 480};
       var NUMBER_OF_RECTANGLES = 15;
+      var FALLING = true;
 
+      function init(){
+        setInterval(draw, 30);
+        setInterval(cleanupStaleResources, 1000);
+      }
+
+      function draw() {
+        var canvas = document.getElementById('tutorial');
+
+        if (canvas.getContext) {
+          var ctx = canvas.getContext('2d');
+          ctx.clearRect(0, 0, 640, 480);
+          for (i=0; i < allShapes.length; ++i) {
+            allShapes[i].draw(ctx);
+          } 
+        }
+      }
+
+      function cleanupStaleResources() {
+        for (i=0; i < staleResources.length; ++i) {
+          for (j=0; j < allShapes.length; ++j) {
+            if (staleResources[i] == allShapes[j]) {
+              allShapes.splice(j, 1);
+            }
+          }
+        }
+        staleResources = [];
+      }
+
+
+      /* Rectangle object */
       var RotatingRectangle = function(opts){
         var rotationState = 0;
         var active = true;
@@ -44,26 +75,12 @@
         }
       }
 
-      function init(){
-        setInterval(draw, 30);
-        setInterval(cleanupStaleResources, 1000);
-      }
-
       function generateShapes(count){
         var allShapes = [];
         for (i=0; i < count; ++i) {
           allShapes.push(createRectangle()); 
         }
         return allShapes;
-      }
-
-      function removeRectangle(rect){
-        for (i=0; i < allShapes.length; ++i) {
-          if (allShapes[i] == rect){
-            allShapes.splice(i, 1);
-            return;
-          }
-        }
       }
 
       function createRectangle(){
@@ -77,34 +94,11 @@
           y: Math.floor(Math.random() * 480), 
           width: 50, 
           height: 50, 
-          falling: true,
+          falling: FALLING,
           rotationSpeed: Math.random()*.10,
           fillColor: "rgba("+red+", "+green+", "+blue+", "+opacity+")", 
           direction: direction
         });
-      }
-
-      function draw() {
-        var canvas = document.getElementById('tutorial');
-
-        if (canvas.getContext) {
-          var ctx = canvas.getContext('2d');
-          ctx.clearRect(0, 0, 640, 480);
-          for (i=0; i < allShapes.length; ++i) {
-            allShapes[i].draw(ctx);
-          } 
-        }
-      }
-
-      function cleanupStaleResources() {
-        for (i=0; i < staleResources.length; ++i) {
-          for (j=0; j < allShapes.length; ++j) {
-            if (staleResources[i] == allShapes[j]) {
-              allShapes.splice(j, 1);
-            }
-          }
-        }
-        staleResources = [];
       }
 
       var allShapes = generateShapes(NUMBER_OF_RECTANGLES);
