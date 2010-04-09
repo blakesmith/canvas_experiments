@@ -2,6 +2,8 @@
   <head>
     <title>Canvas template</title>
     <script type="text/javascript">
+      var NUMBER_OF_RECTANGLES = 100;
+
       var RotatingRectangle = function(x, y, width, height, rot, rgb, direction){
         var rotation = rot;
         var rotationState = 0;
@@ -21,9 +23,7 @@
         setInterval(draw, 30);
       }
 
-      function generateShapes(){
-        var count = 100;
-
+      function generateShapes(count){
         var allShapes = [];
         for (i=0; i < count; ++i) {
           var rotation = Math.random()*.10
@@ -51,7 +51,7 @@
         }
       }
 
-      var allShapes = generateShapes();
+      var allShapes = generateShapes(NUMBER_OF_RECTANGLES);
 
       init();
     </script>
