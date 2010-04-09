@@ -6,7 +6,7 @@
         var rotation = rot;
         var rotationState = 0;
         this.draw = function(ctx){
-            direction ? rotationState += rotation : rotationState -= rotation;
+          direction ? rotationState += rotation : rotationState -= rotation;
 
           ctx.save();
           ctx.translate(x+(width/2), y+(height/2));
