@@ -7,6 +7,7 @@
 
       var RotatingRectangle = function(opts){
         var rotationState = 0;
+        var active = true;
 
         if (opts.falling) {
           var fallingSpeed = Math.ceil(Math.random() * 5);
@@ -15,6 +16,9 @@
     
 
         this.draw = function(ctx){
+
+          if (!active)
+            return;
 
           if (opts.direction)
             rotationState += opts.rotationSpeed;
@@ -32,7 +36,8 @@
           ctx.restore();
 
           if (opts.y > CANVAS.height) {
-            removeRectangle(this);
+            active = false;
+            staleResources.push(this);
             allShapes.push(createRectangle());
           }
 
@@ -41,6 +46,7 @@
 
       function init(){
         setInterval(draw, 30);
+        setInterval(cleanupStaleResources, 1000);
       }
 
       function generateShapes(count){
@@ -90,7 +96,19 @@
         }
       }
 
+      function cleanupStaleResources() {
+        for (i=0; i < staleResources.length; ++i) {
+          for (j=0; j < allShapes.length; ++j) {
+            if (staleResources[i] == allShapes[j]) {
+              allShapes.splice(j, 1);
+            }
+          }
+        }
+        staleResources = [];
+      }
+
       var allShapes = generateShapes(NUMBER_OF_RECTANGLES);
+      var staleResources = [];
 
       init();
     </script>
