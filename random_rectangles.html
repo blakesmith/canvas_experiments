@@ -4,7 +4,7 @@
     <script type="text/javascript">
       setInterval(draw, 30);
       var degrees = 0.0;
-      var RotatingRectangle = function(x, y, width, height, rot){
+      var RotatingRectangle = function(x, y, width, height, rot, rgb){
         var rotation = rot;
         var rotationState = 0;
         this.draw = function(ctx){
@@ -13,14 +13,27 @@
           ctx.save();
           ctx.translate(x+(width/2), y+(height/2));
           ctx.rotate(rotationState);
-          ctx.fillStyle = "rgb(200, 0, 0)";
+          ctx.fillStyle = rgb;
           ctx.fillRect(0-(width/2), 0-(height/2), width, height);
           ctx.restore();
         }
       }
-      var rect = new RotatingRectangle(50, 50, 50, 50, 0.016);
-      var rect2 = new RotatingRectangle(175, 175, 50, 50, 0.016);
-      var allShapes = [rect, rect2];
+
+      function generateShapes(){
+        var count = 100;
+
+        var allShapes = [];
+        for (i=0; i < count; ++i) {
+          var rotation = Math.random()*.10
+          var x = Math.floor(Math.random() * 640);
+          var y = Math.floor(Math.random() * 480);
+          var red = Math.floor(Math.random() * 200);
+          var rect = new RotatingRectangle(x, y, 50, 50, rotation, "rgb(" + red + ", 0, 0)");
+          allShapes.push(rect); 
+        }
+        return allShapes;
+      }
+      var allShapes = generateShapes();
       function draw() {
         var canvas = document.getElementById('tutorial');
 
