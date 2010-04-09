@@ -2,11 +2,11 @@
   <head>
     <title>Canvas template</title>
     <script type="text/javascript">
-      var RotatingRectangle = function(x, y, width, height, rot, rgb){
+      var RotatingRectangle = function(x, y, width, height, rot, rgb, direction){
         var rotation = rot;
         var rotationState = 0;
         this.draw = function(ctx){
-          rotationState += rotation;
+            direction ? rotationState += rotation : rotationState -= rotation;
 
           ctx.save();
           ctx.translate(x+(width/2), y+(height/2));
@@ -32,7 +32,9 @@
           var red = Math.floor(Math.random() * 256);
           var green = Math.floor(Math.random() * 256);
           var blue = Math.floor(Math.random() * 256);
-          var rect = new RotatingRectangle(x, y, 50, 50, rotation, "rgb("+red+", "+green+", "+blue+")");
+          var opacity = Math.random();
+          var direction = Math.round(Math.random()) == 0 ? false : true
+          var rect = new RotatingRectangle(x, y, 50, 50, rotation, "rgba("+red+", "+green+", "+blue+", "+opacity+")", direction);
           allShapes.push(rect); 
         }
         return allShapes;
