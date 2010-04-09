@@ -18,14 +18,18 @@
           ctx.restore();
         }
       }
-      rect = new RotatingRectangle(50, 50, 50, 50, 0.016);
+      var rect = new RotatingRectangle(50, 50, 50, 50, 0.016);
+      var rect2 = new RotatingRectangle(175, 175, 50, 50, 0.016);
+      var allShapes = [rect, rect2];
       function draw() {
         var canvas = document.getElementById('tutorial');
 
         if (canvas.getContext) {
           var ctx = canvas.getContext('2d');
-          ctx.clearRect(0, 0, 150, 150);
-          rect.draw(ctx);
+          ctx.clearRect(0, 0, 640, 480);
+          for (i=0; i < allShapes.length; ++i) {
+            allShapes[i].draw(ctx);
+          } 
         }
       }
     </script>
@@ -36,6 +40,6 @@
     </style>
   </head>
   <body onload="draw();">
-    <canvas id="tutorial" width="150" height="150" />
+    <canvas id="tutorial" width="640" height="480" />
   </body>
 </html>
