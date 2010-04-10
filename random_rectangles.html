@@ -1,9 +1,9 @@
 <html>
   <head>
-    <title>Canvas template</title>
+    <title>random rectangles - html5 canvas experiment</title>
     <script type="text/javascript">
-      var CANVAS = {width: 640, height: 480};
-      var NUMBER_OF_RECTANGLES = 15;
+      var CANVAS = {width: 800, height: 600};
+      var NUMBER_OF_RECTANGLES = 150;
       var FALLING = true;
 
       function init(){
@@ -12,11 +12,11 @@
       }
 
       function draw() {
-        var canvas = document.getElementById('tutorial');
+        var canvas = document.getElementById('myCanvas');
 
         if (canvas.getContext) {
           var ctx = canvas.getContext('2d');
-          ctx.clearRect(0, 0, 640, 480);
+          ctx.clearRect(0, 0, CANVAS.width, CANVAS.height);
           for (i=0; i < allShapes.length; ++i) {
             allShapes[i].draw(ctx);
           } 
@@ -90,8 +90,8 @@
         var opacity = Math.random();
         var direction = Math.round(Math.random()) == 0 ? false : true
         return new RotatingRectangle({
-          x: Math.floor(Math.random() * 640), 
-          y: Math.floor(Math.random() * 480), 
+          x: Math.floor(Math.random() * CANVAS.width), 
+          y: Math.floor(Math.random() * CANVAS.height), 
           width: 50, 
           height: 50, 
           falling: FALLING,
@@ -107,12 +107,17 @@
       init();
     </script>
     <style type="text/css">
-      canvas {
+      #canvasContainer {
         border: 1px solid black;
+	margin: 0 auto;
+	width: 800px;
+	height: 600px;
       }
     </style>
   </head>
   <body>
-    <canvas id="tutorial" width="640" height="480" />
+    <div id="canvasContainer">
+      <canvas id="myCanvas" width="800" height="600" />
+    </div>
   </body>
 </html>
